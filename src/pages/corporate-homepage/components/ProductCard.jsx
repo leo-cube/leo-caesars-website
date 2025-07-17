@@ -17,53 +17,28 @@ const ProductCard = ({
   // Check if this is the AiJusticeGrid card
   const isAiJusticeGrid = title === "AiJusticeGrid";
   
-  // Get background color based on card type with more vibrant colors
+  // Get background color based on card type with consistent solid color
   const getCardBackgroundColor = () => {
     if (isAiJusticeGrid) {
-      return 'bg-green-100 border-green-300'; // More vibrant for AiJusticeGrid
+      return 'bg-gray-50 border-gray-200'; // Consistent primary color for AiJusticeGrid
     }
     
-    // Apply more vibrant background colors for other cards
-    const backgrounds = {
-      'CaesarScribe': 'bg-rose-100 border-rose-300',
-      'Bhimlaw Ai': 'bg-indigo-100 border-indigo-300',
-      'AI Veterans Support & Mental Health System': 'bg-slate-100 border-slate-300',
-      'AI Child Welfare and Foster System Optimization': 'bg-teal-100 border-teal-300',
-      'AI Prison Reform and Inmate Monitoring': 'bg-orange-100 border-orange-300'
-    };
-    
-    return backgrounds[title] || 'bg-gradient-to-br from-cyan-200 to-blue-300 border-cyan-300';
+    // Apply consistent solid background color for all other cards
+    return 'bg-gray-50 border-gray-200';
   };
 
-  // Get icon colors that match the card theme
+  // Get icon colors that match the consistent theme
   const getIconColors = () => {
     if (isAiJusticeGrid) {
       return isAvailable
-        ? 'bg-green-100 text-green-600 group-hover:bg-green-200'
+        ? 'bg-primary-100 text-primary-600 group-hover:bg-primary-200'
         : 'bg-secondary-100 text-secondary-500';
     }
 
-    const iconColors = {
-      'CaesarScribe': isAvailable
-        ? 'bg-rose-100 text-rose-600 group-hover:bg-rose-200'
-        : 'bg-secondary-100 text-secondary-500',
-      'Bhimlaw Ai': isAvailable
-        ? 'bg-indigo-100 text-indigo-600 group-hover:bg-indigo-200'
-        : 'bg-secondary-100 text-secondary-500',
-      'AI Veterans Support & Mental Health System': isAvailable
-        ? 'bg-slate-100 text-slate-600 group-hover:bg-slate-200'
-        : 'bg-secondary-100 text-secondary-500',
-      'AI Child Welfare and Foster System Optimization': isAvailable
-        ? 'bg-teal-100 text-teal-600 group-hover:bg-teal-200'
-        : 'bg-secondary-100 text-secondary-500',
-      'AI Prison Reform and Inmate Monitoring': isAvailable
-        ? 'bg-orange-100 text-orange-600 group-hover:bg-orange-200'
-        : 'bg-secondary-100 text-secondary-500'
-    };
-
-    return iconColors[title] || (isAvailable
+    // Consistent icon colors for all cards
+    return isAvailable
       ? 'bg-primary-100 text-primary-600 group-hover:bg-primary-200'
-      : 'bg-secondary-100 text-secondary-500');
+      : 'bg-secondary-100 text-secondary-500';
   };
 
   const handleCardClick = () => {

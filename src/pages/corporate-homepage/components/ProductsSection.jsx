@@ -37,7 +37,7 @@ const ProductsSection = () => {
     {
       id: 4,
       title: "AI Veterans Support & Mental Health System",
-      description: "Specialized AI platform designed to support veterans' mental health needs through intelligent screening, personalized treatment recommendations, crisis intervention protocols, and comprehensive care coordination.",
+      description: "Specialized AI platform designed to support veterans mental health needs through intelligent screening, personalized treatment recommendations, crisis intervention protocols, and comprehensive care coordination.",
       status: "Coming Soon",
       iconName: "Shield",
       isAvailable: false,

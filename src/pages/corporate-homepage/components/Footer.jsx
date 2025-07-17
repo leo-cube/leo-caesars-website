@@ -159,41 +159,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Office Locations */}
-        <div className="py-8 border-t border-secondary-800">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Tampa Office */}
-            <div className="flex items-start space-x-4">
-              <div className="w-8 h-8 bg-secondary-800 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Icon name="MapPin" size={16} className="text-primary" />
-              </div>
-              <div>
-                <h5 className="font-heading font-semibold mb-2">Tampa, Florida USA</h5>
-                <div className="text-sm text-secondary-300 space-y-1">
-                  <p>123 Innovation Drive<br />Tampa, FL 33602, United States</p>
-                  <p>Phone: +1 (813) 555-0123</p>
-                  <p>Email: usa@leocaesars.com</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Chennai Office */}
-            <div className="flex items-start space-x-4">
-              <div className="w-8 h-8 bg-secondary-800 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Icon name="MapPin" size={16} className="text-accent" />
-              </div>
-              <div>
-                <h5 className="font-heading font-semibold mb-2">Chennai, Tamil Nadu India</h5>
-                <div className="text-sm text-secondary-300 space-y-1">
-                  <p>456 Tech Park Road<br />Chennai, Tamil Nadu 600001, India</p>
-                  <p>Phone: +91 44 5555 0123</p>
-                  <p>Email: india@leocaesars.com</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Bottom Bar */}
         <div className="py-6 border-t border-secondary-800">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">

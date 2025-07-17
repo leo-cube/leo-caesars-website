@@ -133,17 +133,17 @@ const HeroSection = () => {
             <div className="pt-8 border-t border-border">
               <div className="grid grid-cols-3 gap-8">
                 <div className="text-center">
-                  <div className="text-2xl font-heading font-bold text-primary">6+</div>
+                  <div className="text-2xl font-heading font-bold text-primary">10+</div>
                   <div className="text-sm text-text-secondary">AI Products</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-heading font-bold text-primary">2</div>
                   <div className="text-sm text-text-secondary">Global Offices</div>
                 </div>
-                <div className="text-center">
+                {/* <div className="text-center">
                   <div className="text-2xl font-heading font-bold text-primary">100%</div>
                   <div className="text-sm text-text-secondary">Government Focus</div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
