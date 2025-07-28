@@ -20,7 +20,7 @@ jobs:
         run: npm run build
 
       - name: Deploy ONLY CONTENTS of dist/ (not folder itself)
-        uses: SamKirkland/FTP-Deploy-Action@v4
+        uses: samkirkland/ftp-deploy-action@v4.3.4
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
