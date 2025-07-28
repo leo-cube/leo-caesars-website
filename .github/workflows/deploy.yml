@@ -1,4 +1,4 @@
-name: Build and Deploy Vite App to Hostinger
+name: Build and Deploy to Hostinger via FTP
 
 on:
   push:
@@ -10,34 +10,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
 
-      - name: Install Dependencies
-        run: npm install
+    - name: Install dependencies
+      run: npm install
 
-      - name: Build Vite Project
-        run: npm run build
+    - name: Build project
+      run: npm run build
 
-      - name: Copy .htaccess (if exists)
-        run: |
-          if [ -f .htaccess ]; then
-            cp .htaccess dist/
-          fi
+    - name: Install lftp
+      run: sudo apt-get update && sudo apt-get install -y lftp
 
-      - name: List dist folder content for debug
-        run: ls -R dist/
-
-      - name: Upload dist/ to Hostinger FTP
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y lftp
-          lftp -c "
-            open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }};
-            mirror -R dist/ public_html/ --overwrite --verbose
-          "
+    - name: Upload dist/ to Hostinger (public_html)
+      env:
+        FTP_SERVER: ${{ secrets.FTP_SERVER }}
+        FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+      run: |
+        lftp -e "
+          set ssl:verify-certificate no;
+          open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER;
+          mirror -R -e -n dist public_html;
+          quit
+        "
