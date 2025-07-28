@@ -6,7 +6,7 @@ on:
       - web1.0
 
 jobs:
-  build-and-commit:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,32 +24,18 @@ jobs:
       - name: Build the Vite project
         run: npm run build
 
-      - name: Copy .htaccess file if exists
+      - name: Ensure dist folder exists
+        run: |
+          mkdir -p dist
+          echo "dist folder verified or created"
+
+      - name: Copy .htaccess (if exists)
         run: |
           if [ -f .htaccess ]; then
             cp .htaccess dist/
           fi
 
-      - name: Push dist folder back to repo
-        env:
-          TOKEN: ${{ secrets.ACTIONS_TOKEN }}
-        run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git remote set-url origin https://x-access-token:${TOKEN}@github.com/${{ github.repository }}
-          git add dist
-          git commit -m "Auto-build: update dist folder [skip ci]" || echo "No changes to commit"
-          git push origin web1.0
-
-  deploy:
-    needs: build-and-commit
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Deploy to Hostinger via FTP
+      - name: Deploy dist contents to Hostinger via FTP
         uses: samkirkland/ftp-deploy-action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
