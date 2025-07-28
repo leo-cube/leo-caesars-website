@@ -1,4 +1,4 @@
-name: Deploy Vite + React to Hostinger (Only dist contents)
+name: FTP Deploy
 
 on:
   push:
@@ -6,26 +6,25 @@ on:
       - web1.0  # or your deployment branch
 
 jobs:
-  build-and-deploy:
+  ftp-deploy:
+    name: Upload dist/ contents to Hostinger
     runs-on: ubuntu-latest
-
     steps:
-      - name:  Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: npm install
+      - name: Build project (optional)
+        run: |
+          npm install
+          npm run build
 
-      - name: Build the project
-        run: npm run build
-
-      - name: Deploy ONLY CONTENTS of dist/ (not folder itself)
-        uses: samkirkland/ftp-deploy-action@v4.3.4
+      - name: FTP Deploy (dist/ contents only)
+        uses: SamKirkland/FTP-Deploy-Action@v4
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: ${{ secrets.FTP_PORT }}
-          server-dir: ${{ secrets.FTP_TARGET }}
           local-dir: ./dist/
-          protocol: ftp
+          server-dir: ${{ secrets.FTP_TARGET }}
+          dangerous-clean-slate: false
