@@ -1,30 +1,35 @@
-name: FTP Deploy
+name: Deploy to Hostinger
 
 on:
   push:
     branches:
-      - web1.0  # or your deployment branch
+      - web1.0  # Your deployment branch
 
 jobs:
   ftp-deploy:
-    name: Upload dist/ contents to Hostinger
+    name: FTP Deploy
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Build project (optional)
-        run: |
-          npm install
-          npm run build
-
-      - name: FTP Deploy (dist/ contents only)
-        uses: samkirkland/ftp-deploy-action@v4.3.4
+      - name: Install Node.js and build
+        uses: actions/setup-node@v3
         with:
-          server: ${{ secrets.FTP_HOST }}
+          node-version: '18'  # Or your preferred version
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Upload dist/ via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: ${{ secrets.FTP_PORT }}
-          local-dir: dist/
-          server-dir: ${{ secrets.FTP_TARGET }}
-          dangerous-clean-slate: false
+          local-dir: dist
+          server-dir: public_html/
