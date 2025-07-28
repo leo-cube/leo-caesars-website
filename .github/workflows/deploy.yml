@@ -1,35 +1,35 @@
-name: Deploy to Hostinger
+name: Clean & Deploy to Hostinger via FTP
 
 on:
   push:
     branches:
-      - web1.0  # Your deployment branch
+      - web1.0  # Change this if your branch name is different
 
 jobs:
-  ftp-deploy:
-    name: FTP Deploy
+  clean-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-      - name: Install Node.js and build
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'  # Or your preferred version
+          node-version: 18
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm install
 
-      - name: Build project
+      - name: Build Vite Project
         run: npm run build
 
-      - name: Upload dist/ via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      - name: Clear public_html and Deploy dist/
+        uses: samkirkland/ftp-deploy-action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: dist
-          server-dir: public_html/
+          local-dir: ./dist
+          server-dir: ${{ secrets.FTP_TARGET_DIR }}
+          dangerous-clean-slate: true
