@@ -6,11 +6,11 @@ on:
       - web1.0
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
       - name: Set up Node.js
@@ -18,10 +18,10 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm install
 
-      - name: Build the Vite project
+      - name: Build Vite Project
         run: npm run build
 
       - name: Copy .htaccess (if exists)
@@ -30,12 +30,14 @@ jobs:
             cp .htaccess dist/
           fi
 
-      - name: Deploy dist folder to Hostinger via FTP
-        uses: samkirkland/ftp-deploy-action@v4.3.4
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /public_html/
-          local-dir: dist/
-          dangerous-clean-slate: true
+      - name: List dist folder content for debug
+        run: ls -R dist/
+
+      - name: Upload dist/ to Hostinger FTP
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lftp
+          lftp -c "
+            open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }};
+            mirror -R dist/ public_html/ --overwrite --verbose
+          "
