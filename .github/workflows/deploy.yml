@@ -25,7 +25,7 @@ jobs:
         run: npm run build
 
       - name: Clear public_html and Deploy dist/
-        uses: samkirkland/ftp-deploy-action@v4.3.4
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
