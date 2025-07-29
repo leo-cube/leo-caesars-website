@@ -20,6 +20,9 @@ jobs:
     - run: npm install
     - run: npm run build
 
+    - name: List dist contents
+      run: ls -R dist
+
     - name: Deploy via SSH
       uses: appleboy/scp-action@v0.1.4
       with:
@@ -27,5 +30,6 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        source: "dist/*"
+        source: "dist"
+        strip_components: 1
         target: "/home/u563845428/public_html"
