@@ -1,4 +1,4 @@
-name: Build and Deploy to Hostinger
+name: 🚀 Deploy to Hostinger via FTP (Only dist contents)
 
 on:
   push:
@@ -10,31 +10,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout your repo
-      - name: Checkout repo
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # Install Node.js
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      # Install dependencies
-      - name: Install dependencies
-        run: npm install
+      - name: Install Dependencies
+        run: npm ci
 
-      # Build the Vite project
-      - name: Build Vite project
+      - name: Build Project (Vite)
         run: npm run build
 
-      # Upload dist/ to Hostinger public_html
-      - name: Upload to Hostinger via FTP
+      - name: Debug:List dist folder contents
+        run: |
+          echo "🧾 Listing files inside dist/"
+          ls -al dist
+          echo "📂 Nested structure:"
+          find dist
+
+      - name: 🚀 Deploy dist/ contents via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
+          port: 21
+          protocol: ftp
           local-dir: dist/
           server-dir: public_html/
-          dangerous-clean-slate: true
+          dangerous-clean-slate: true # optional: clears remote before upload
