@@ -1,44 +1,31 @@
-name: 🚀 Deploy to Hostinger via FTP (Only dist contents)
+name: Deploy to Hostinger via SSH
 
 on:
   push:
-    branches:
-      - web1.0
+    branches: [web1.0]
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+    - name: Checkout source
+      uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+    - name: Install Node & Build
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
 
-      - name: Install Dependencies
-        run: npm install
+    - run: npm install
+    - run: npm run build
 
-      - name: Build Project (Vite)
-        run: npm run build
-
-      - name: Debug:List dist folder contents
-        run: |
-          echo "🧾 Listing files inside dist/"
-          ls -al dist
-          echo "📂 Nested structure:"
-          find dist
-
-      - name: 🚀 Deploy dist/ contents via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          port: 21
-          protocol: ftp
-          local-dir: dist/
-          server-dir: public_html/
-          dangerous-clean-slate: true # optional: clears remote before upload
+    - name: Deploy via SSH
+      uses: appleboy/scp-action@v0.1.4
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        port: ${{ secrets.SSH_PORT }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        source: "dist/*"
+        target: "/home/u563845428/public_html"
